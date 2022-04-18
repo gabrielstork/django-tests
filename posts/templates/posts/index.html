@@ -1,0 +1,52 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}Feed{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<section>
+    {% if posts.count == 0 %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">No posts were found.</p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="container">
+        {% for post in posts %}
+        <div class="card mb-2">
+            <h5 class="card-header">{{ post.author }}</h5>
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.text }}</p>
+                <div class="d-flex">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if request.user in post.likes.all %}
+                        <button type="submit" name="post" value="{{ post.id }}" class="btn btn-secondary btn-sm shadow-none me-1">Dislike</button>
+                        {% else %}
+                        <button type="submit" name="post" value="{{ post.id }}" class="btn btn-success btn-sm shadow-none me-1">Like</button>
+                        {% endif %}
+                    </form>
+                    <a href="{% url 'post' post.id %}" class="btn btn-primary btn-sm shadow-none ms-1">Comment</a>   
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+</section>
+{% else %}
+<section>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text"><strong>Log In</strong> or <strong>Sign Up</strong> to see your feed.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

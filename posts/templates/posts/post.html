@@ -1,0 +1,30 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}Post{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container">
+        <div class="card mb-2">
+            <h5 class="card-header">{{ post.author }}</h5>
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.text }}</p>
+            </div>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.text }}
+            <button type="submit" class="btn btn-success btn-sm shadow-none w-100 mb-3">Comment</button>
+        </form>
+        {% for comment in post.comments.all %}
+        <div class="card mb-2">
+            <h5 class="card-header">{{ comment.author }}</h5>
+            <div class="card-body">
+                <p class="card-text">{{ comment.text }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

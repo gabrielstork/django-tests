@@ -1,0 +1,21 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container" style="max-width: 500px;">
+        {% if form.errors %}
+            {% for error in form.non_field_errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.username }}
+            {{ form.password }}
+            <button type="submit" class="btn btn-primary btn-sm shadow-none w-100">Log In</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
